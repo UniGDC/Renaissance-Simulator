@@ -5,72 +5,72 @@ using System.Collections.Generic;
 
 public class MenuController : MonoBehaviour
 {
-    public GameObject menuItemPrefab;
-    public GameObject menuItemPrefab2;
-    public Dictionary<GameObject, Action> menuItems = new Dictionary<GameObject, Action>();
-    public Dictionary<GameObject, Action> menuItems2 = new Dictionary<GameObject, Action>();
-    private Dictionary<GameObject, Action> currentMenu = null;
+    public GameObject MenuItemPrefab;
+    public GameObject MenuItemPrefab2;
+    public Dictionary<GameObject, Action> MenuItems = new Dictionary<GameObject, Action>();
+    public Dictionary<GameObject, Action> MenuItems2 = new Dictionary<GameObject, Action>();
+    private Dictionary<GameObject, Action> CurrentMenu = null;
 
     Vector2 positionOfFirstMenuItem = new Vector2(-7.16f, -0.73f);
     // Use this for initialization
     void Start()
     {
-        menuItems.Add(Instantiate(menuItemPrefab), () =>
+        MenuItems.Add(Instantiate(MenuItemPrefab), () =>
             { //make individual menu item objects later
                 Debug.Log("Menu Item 1-1 Pressed");
             }); 
-        menuItems.Add(Instantiate(menuItemPrefab), () =>
+        MenuItems.Add(Instantiate(MenuItemPrefab), () =>
             {
                 Debug.Log("Menu Item 1-2 Pressed");
 
             });
-        menuItems.Add(Instantiate(menuItemPrefab), () =>
+        MenuItems.Add(Instantiate(MenuItemPrefab), () =>
             {
                 Debug.Log("Menu Item 1-3 Pressed");
 
             });
-        menuItems.Add(Instantiate(menuItemPrefab), () =>
+        MenuItems.Add(Instantiate(MenuItemPrefab), () =>
             {
                 Debug.Log("Menu Item 1-4 Pressed");
-                switchMenus(menuItems2);
+                switchMenus(MenuItems2);
 
             });
-        menuItems2.Add(Instantiate(menuItemPrefab2), () =>
+        MenuItems2.Add(Instantiate(MenuItemPrefab2), () =>
             { 
                 Debug.Log("Menu Item 2-1 Pressed");
             }); 
-        menuItems2.Add(Instantiate(menuItemPrefab2), () =>
+        MenuItems2.Add(Instantiate(MenuItemPrefab2), () =>
             {
                 Debug.Log("Menu Item 2-2 Pressed");
 
             });
-        menuItems2.Add(Instantiate(menuItemPrefab2), () =>
+        MenuItems2.Add(Instantiate(MenuItemPrefab2), () =>
             {
                 Debug.Log("Menu Item 2-3 Pressed");
 
             });
-        menuItems2.Add(Instantiate(menuItemPrefab2), () =>
+        MenuItems2.Add(Instantiate(MenuItemPrefab2), () =>
             {
                 Debug.Log("Menu Item 2-4 Pressed");
-                switchMenus(menuItems);
+                switchMenus(MenuItems);
 
             });
-        switchMenus(menuItems);
+        switchMenus(MenuItems);
 
     }
 
     public void doMenuAction(GameObject menuItem)
     {
-        currentMenu[menuItem]();
+        CurrentMenu[menuItem]();
     }
 
     public void switchMenus(Dictionary<GameObject, Action> menuToSwitchTo)
     {
 
         float delayOfAnimation = 0;
-        if (currentMenu != null)
+        if (CurrentMenu != null)
         {
-            foreach (GameObject menuItem in currentMenu.Keys)
+            foreach (GameObject menuItem in CurrentMenu.Keys)
             {
                 MenuItemController menuItemController = menuItem.GetComponent<MenuItemController>();
                 menuItemController.StopAllCoroutines();
@@ -96,7 +96,7 @@ public class MenuController : MonoBehaviour
             menuItemPosition = new Vector2(menuItemPosition.x, menuItemPosition.y - 1.0f);
             delayOfAnimation += 0.15f; //amount of time between starting each movement (for cascading effect)
         }
-        currentMenu = menuToSwitchTo;
+        CurrentMenu = menuToSwitchTo;
     }
     // Update is called once per frame
     void Update()
