@@ -9,11 +9,10 @@ public class Parallax : MonoBehaviour
     float PlayerInitialX;
     float ObjectInitialX;
 
-	// Use this for initialization
-	void Start()
-	{
-        
-	}
+    // Use this for initialization
+    void Start()
+    {
+    }
 
     void Awake()
     {
@@ -21,25 +20,26 @@ public class Parallax : MonoBehaviour
         ObjectInitialX = gameObject.transform.position.x;
     }
 
-	// Called for physics update
-	void FixedUpdate()
-	{
+    // Called for physics update
+    void FixedUpdate()
+    {
+    }
 
-	}
-    
     void UpdatePosition()
     {
-        gameObject.transform.position = new Vector3(ObjectInitialX + (Player.transform.position.x - PlayerInitialX) * ParallaxFactor, gameObject.transform.position.y, gameObject.transform.position.z);
+        gameObject.transform.position =
+            new Vector3(ObjectInitialX + (Player.transform.position.x - PlayerInitialX) * ParallaxFactor,
+                gameObject.transform.position.y, gameObject.transform.position.z);
     }
-	
-	// Update is called once per frame
-	void Update()
-	{
+
+    // Update is called once per frame
+    void Update()
+    {
         if (!Late)
         {
             UpdatePosition();
         }
-	}
+    }
 
     void LateUpdate()
     {

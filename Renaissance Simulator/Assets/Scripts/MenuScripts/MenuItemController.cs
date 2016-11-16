@@ -17,7 +17,6 @@ public class MenuItemController : MonoBehaviour
         this.parentMenuController = parentMenuController;
         finalPosition = new Vector2(originalPosition.x + 1.0f, originalPosition.y);
         hidePosition = new Vector2(-9f - 0.5f * transform.localScale.x, originalPosition.y);
-
     }
 
     void Update()

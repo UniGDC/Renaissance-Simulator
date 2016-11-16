@@ -16,47 +16,26 @@ public class MenuController : MonoBehaviour
     void Start()
     {
         MenuItems.Add(Instantiate(MenuItemPrefab), () =>
-            { //make individual menu item objects later
-                Debug.Log("Menu Item 1-1 Pressed");
-            }); 
+        {
+            //make individual menu item objects later
+            Debug.Log("Menu Item 1-1 Pressed");
+        });
+        MenuItems.Add(Instantiate(MenuItemPrefab), () => { Debug.Log("Menu Item 1-2 Pressed"); });
+        MenuItems.Add(Instantiate(MenuItemPrefab), () => { Debug.Log("Menu Item 1-3 Pressed"); });
         MenuItems.Add(Instantiate(MenuItemPrefab), () =>
-            {
-                Debug.Log("Menu Item 1-2 Pressed");
-
-            });
-        MenuItems.Add(Instantiate(MenuItemPrefab), () =>
-            {
-                Debug.Log("Menu Item 1-3 Pressed");
-
-            });
-        MenuItems.Add(Instantiate(MenuItemPrefab), () =>
-            {
-                Debug.Log("Menu Item 1-4 Pressed");
-                switchMenus(MenuItems2);
-
-            });
+        {
+            Debug.Log("Menu Item 1-4 Pressed");
+            switchMenus(MenuItems2);
+        });
+        MenuItems2.Add(Instantiate(MenuItemPrefab2), () => { Debug.Log("Menu Item 2-1 Pressed"); });
+        MenuItems2.Add(Instantiate(MenuItemPrefab2), () => { Debug.Log("Menu Item 2-2 Pressed"); });
+        MenuItems2.Add(Instantiate(MenuItemPrefab2), () => { Debug.Log("Menu Item 2-3 Pressed"); });
         MenuItems2.Add(Instantiate(MenuItemPrefab2), () =>
-            { 
-                Debug.Log("Menu Item 2-1 Pressed");
-            }); 
-        MenuItems2.Add(Instantiate(MenuItemPrefab2), () =>
-            {
-                Debug.Log("Menu Item 2-2 Pressed");
-
-            });
-        MenuItems2.Add(Instantiate(MenuItemPrefab2), () =>
-            {
-                Debug.Log("Menu Item 2-3 Pressed");
-
-            });
-        MenuItems2.Add(Instantiate(MenuItemPrefab2), () =>
-            {
-                Debug.Log("Menu Item 2-4 Pressed");
-                switchMenus(MenuItems);
-
-            });
+        {
+            Debug.Log("Menu Item 2-4 Pressed");
+            switchMenus(MenuItems);
+        });
         switchMenus(MenuItems);
-
     }
 
     public void doMenuAction(GameObject menuItem)
@@ -66,7 +45,6 @@ public class MenuController : MonoBehaviour
 
     public void switchMenus(Dictionary<GameObject, Action> menuToSwitchTo)
     {
-
         float delayOfAnimation = 0;
         if (CurrentMenu != null)
         {
@@ -80,7 +58,6 @@ public class MenuController : MonoBehaviour
                 delayOfAnimation += 0.15f; //amount of time between starting each movement (for cascading effect)
             }
             delayOfAnimation *= 0.4f; //overlap
-
         }
 
 
@@ -98,9 +75,9 @@ public class MenuController : MonoBehaviour
         }
         CurrentMenu = menuToSwitchTo;
     }
+
     // Update is called once per frame
     void Update()
     {
-	
     }
 }

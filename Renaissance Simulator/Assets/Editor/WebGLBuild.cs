@@ -7,7 +7,7 @@ class WebGLBuilder
 {
     static void Build()
     {
-        string[] Scenes = new string[] { "Assets/Scenes/MenuScreen.unity", "Assets/Scenes/Tutorial.unity" };
+        string[] Scenes = new string[] {"Assets/Scenes/MenuScreen.unity", "Assets/Scenes/Tutorial.unity"};
         BuildPipeline.BuildPlayer(Scenes, "Build", BuildTarget.WebGL, BuildOptions.None);
     }
 }
