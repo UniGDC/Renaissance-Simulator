@@ -12,18 +12,30 @@ public abstract class AbstractEntityMovement : MonoBehaviour
     public Rigidbody2D ThisBody;
     public Collider2D ThisCollider;
 
+    protected bool IsGrounded;
+
     // Use this for initialization
     protected virtual void Start()
     {
-        foreach (int Layer in GroundLayers)
+        foreach (int layer in GroundLayers)
         {
-            GroundLayerMask += 1 << Layer;
+            GroundLayerMask += 1 << layer;
+        }
+
+        if (ThisBody == null)
+        {
+            ThisBody = gameObject.GetComponent<Rigidbody2D>();
+        }
+        if (ThisCollider == null)
+        {
+            ThisCollider = gameObject.GetComponent<Collider2D>();
         }
     }
 
-    protected bool IsGrounded()
+    protected bool UpdateGrounded()
     {
-        return ThisCollider.IsTouchingLayers(GroundLayerMask);
+        IsGrounded = ThisCollider.IsTouchingLayers(GroundLayerMask);
+        return IsGrounded;
     }
 
     /*
@@ -44,10 +56,12 @@ public abstract class AbstractEntityMovement : MonoBehaviour
 
     protected virtual void OnJump()
     {
+        IsGrounded = false;
     }
 
     protected virtual void OnLand()
     {
+        IsGrounded = true;
     }
 
     protected virtual void OnCollisionEnter2D(Collision2D other)

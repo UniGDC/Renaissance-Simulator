@@ -19,24 +19,11 @@ public class CameraFollow : MonoBehaviour
         PlayerTransform = Player.transform;
     }
 
-    private float Clamp(float Value, float LowerBound, float UpperBound)
-    {
-        if (Value < LowerBound)
-        {
-            return LowerBound;
-        }
-        if (Value > UpperBound)
-        {
-            return UpperBound;
-        }
-        return Value;
-    }
-
     // Update is called once per frame
     void LateUpdate()
     {
         ThisTransform.position =
-            new Vector3(Bounded ? Clamp(PlayerTransform.position.x, LeftBound, RightBound) : PlayerTransform.position.x,
+            new Vector3(Bounded ? Mathf.Clamp(PlayerTransform.position.x, LeftBound, RightBound) : PlayerTransform.position.x,
                 ThisTransform.position.y, ThisTransform.position.z);
     }
 }

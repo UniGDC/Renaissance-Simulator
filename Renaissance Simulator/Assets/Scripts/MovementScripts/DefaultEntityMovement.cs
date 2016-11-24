@@ -9,8 +9,8 @@ public abstract class DefaultEntityMovement : AbstractEntityMovement
     public float AirborneSpeedMultiplier;
     public float JumpForce;
 
-    private float JumpLaunchDirection;
-    private bool ReversedDirection;
+    protected float JumpLaunchDirection;
+    protected bool ReversedDirection;
 
     protected new virtual void Start()
     {
@@ -47,15 +47,15 @@ public abstract class DefaultEntityMovement : AbstractEntityMovement
 
     protected override bool GetJump()
     {
-        return IsGrounded() && GetVerticalInput() > 0;
+        return IsGrounded && GetVerticalInput() > 0 && UpdateGrounded();
     }
 
     protected void UpdateReversedDirection()
     {
-        float HorizontalInput = GetHorizontalInput();
-        bool IsReversingDirection = !IsGrounded() &&
-               ((HorizontalInput < 0 && JumpLaunchDirection > 0) || (HorizontalInput > 0 && JumpLaunchDirection < 0));
-        if (!IsGrounded() && IsReversingDirection)
+        float horizontalInput = GetHorizontalInput();
+        bool isReversingDirection = !IsGrounded &&
+               ((horizontalInput < 0 && JumpLaunchDirection > 0) || (horizontalInput > 0 && JumpLaunchDirection < 0));
+        if (!IsGrounded && isReversingDirection)
         {
             ReversedDirection = true;
         }
