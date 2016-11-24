@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Parallax : MonoBehaviour
 {
+	// The speed relative to player; set this to 0 to stay stationary, 1 to follow the player, and anywhere in between to move slower than the player.
     public float ParallaxFactor;
     public bool Late;
     public GameObject Player;
@@ -18,11 +19,6 @@ public class Parallax : MonoBehaviour
     {
         PlayerInitialX = Player.transform.position.x;
         ObjectInitialX = gameObject.transform.position.x;
-    }
-
-    // Called for physics update
-    void FixedUpdate()
-    {
     }
 
     void UpdatePosition()

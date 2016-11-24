@@ -4,24 +4,17 @@ using UnityEngine.Assertions.Comparers;
 
 public abstract class DefaultEntityMovement : AbstractEntityMovement
 {
-    private const float DefualtHorizontalSpeed = 10F;
-    private const float DefualtAirborneForceMultiplier = 0.25F;
+    private const float DefualtAirborneSpeedMultiplier = 0.25F;
     private const float DefaultJumpForce = 2F;
 
-    public float HorizontalSpeed;
     public float AirborneForceMultiplier;
     public float JumpForce;
 
     void Start()
     {
-        // Check for negative values and reset to defaults.
-        if (HorizontalSpeed < 0)
-        {
-            HorizontalSpeed = DefualtHorizontalSpeed;
-        }
         if (AirborneForceMultiplier < 0)
         {
-            AirborneForceMultiplier = DefualtAirborneForceMultiplier;
+            AirborneForceMultiplier = DefualtAirborneSpeedMultiplier;
         }
         if (JumpForce < 0)
         {
@@ -33,9 +26,16 @@ public abstract class DefaultEntityMovement : AbstractEntityMovement
 
     protected abstract float GetVerticalInput();
 
-    protected override float GetHorizontalMoveForce()
+    protected bool IsReversingDirection()
     {
-        return GetHorizontalInput() * HorizontalSpeed * (IsGrounded() ? 1f : AirborneForceMultiplier);
+        float HorizontalInput = GetHorizontalInput();
+        return (HorizontalInput < 0 && ThisBody.velocity.x > 0) || (HorizontalInput > 0 && ThisBody.velocity.x < 0);
+    }
+
+    protected override float GetHorizontalMove()
+    {
+        return GetHorizontalInput() * HorizontalSpeedCap *
+               (!IsGrounded() && IsReversingDirection() ? AirborneForceMultiplier : 1f);
     }
 
     protected override bool GetJump()

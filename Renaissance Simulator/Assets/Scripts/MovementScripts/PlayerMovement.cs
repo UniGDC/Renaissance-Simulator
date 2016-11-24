@@ -5,7 +5,8 @@ public class PlayerMovement : DefaultEntityMovement
 {
     protected override float GetHorizontalInput()
     {
-        return Input.GetAxis("Horizontal");
+        float RawInput = Input.GetAxisRaw("Horizontal");
+        return RawInput > 0 ? 1 : RawInput < 0 ? -1 : 0;
     }
 
     protected override float GetVerticalInput()
