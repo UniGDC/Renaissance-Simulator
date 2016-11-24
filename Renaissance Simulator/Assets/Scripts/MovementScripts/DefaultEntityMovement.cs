@@ -9,7 +9,8 @@ public abstract class DefaultEntityMovement : AbstractEntityMovement
     public float AirborneSpeedMultiplier;
     public float JumpForce;
 
-    protected float JumpLaunchDirection;
+    private float JumpLaunchDirection;
+    private bool ReversedDirection;
 
     protected new virtual void Start()
     {
@@ -23,7 +24,9 @@ public abstract class DefaultEntityMovement : AbstractEntityMovement
         {
             JumpForce = DefaultJumpForce;
         }
+
         JumpLaunchDirection = 0;
+        ReversedDirection = false;
     }
 
     protected abstract float GetHorizontalInput();
@@ -32,8 +35,9 @@ public abstract class DefaultEntityMovement : AbstractEntityMovement
 
     protected override float GetHorizontalMove()
     {
+        UpdateReversedDirection();
         return GetHorizontalInput() * HorizontalSpeedCap *
-               (IsReversingDirection() ? AirborneSpeedMultiplier : 1f);
+               (ReversedDirection ? AirborneSpeedMultiplier : 1f);
     }
 
     protected override float GetJumpForce()
@@ -46,16 +50,26 @@ public abstract class DefaultEntityMovement : AbstractEntityMovement
         return IsGrounded() && GetVerticalInput() > 0;
     }
 
-    protected bool IsReversingDirection()
+    protected void UpdateReversedDirection()
     {
         float HorizontalInput = GetHorizontalInput();
-        return !IsGrounded() &&
+        bool IsReversingDirection = !IsGrounded() &&
                ((HorizontalInput < 0 && JumpLaunchDirection > 0) || (HorizontalInput > 0 && JumpLaunchDirection < 0));
+        if (!IsGrounded() && IsReversingDirection)
+        {
+            ReversedDirection = true;
+        }
     }
 
     protected override void OnJump()
     {
         base.OnJump();
         JumpLaunchDirection = ThisBody.velocity.x;
+    }
+
+    protected override void OnLand()
+    {
+        base.OnLand();
+        ReversedDirection = false;
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using UnityEngineInternal;
 
 public abstract class AbstractEntityMovement : MonoBehaviour
@@ -47,6 +48,14 @@ public abstract class AbstractEntityMovement : MonoBehaviour
 
     protected virtual void OnLand()
     {
+    }
+
+    protected virtual void OnCollisionEnter2D(Collision2D other)
+    {
+        if (GroundLayers.Contains(other.gameObject.layer))
+        {
+            OnLand();
+        }
     }
 
     void FixedUpdate()
