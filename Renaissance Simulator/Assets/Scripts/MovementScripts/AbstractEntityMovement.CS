@@ -3,7 +3,8 @@ using UnityEngineInternal;
 
 public abstract class AbstractEntityMovement : MonoBehaviour
 {
-    public int GroundLayerMask;
+    public int[] GroundLayers;
+    private int GroundLayerMask = 0;
 
     public float HorizontalSpeedCap;
 
@@ -11,8 +12,17 @@ public abstract class AbstractEntityMovement : MonoBehaviour
     public Collider2D ThisCollider;
 
     // Use this for initialization
-    void Start()
+    protected virtual void Start()
     {
+        foreach (int Layer in GroundLayers)
+        {
+            GroundLayerMask += 1 << Layer;
+        }
+    }
+
+    protected bool IsGrounded()
+    {
+        return ThisCollider.IsTouchingLayers(GroundLayerMask);
     }
 
     /*
@@ -22,18 +32,21 @@ public abstract class AbstractEntityMovement : MonoBehaviour
     protected abstract float GetHorizontalMove();
 
     /*
-    Evaluates whether the entity wants to jump right now.
-     */
-    protected abstract bool GetJump();
-
-    /*
     Calculates the jumping force.
      */
     protected abstract float GetJumpForce();
 
-    protected bool IsGrounded()
+    /*
+    Evaluates whether the entity wants to jump right now.
+     */
+    protected abstract bool GetJump();
+
+    protected virtual void OnJump()
     {
-        return ThisCollider.IsTouchingLayers(GroundLayerMask);
+    }
+
+    protected virtual void OnLand()
+    {
     }
 
     void FixedUpdate()
@@ -43,6 +56,7 @@ public abstract class AbstractEntityMovement : MonoBehaviour
         if (GetJump())
         {
             ThisBody.AddForce(new Vector2(0, GetJumpForce()), ForceMode2D.Impulse);
+            OnJump();
         }
     }
 
