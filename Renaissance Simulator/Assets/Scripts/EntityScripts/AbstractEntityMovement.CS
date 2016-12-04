@@ -5,7 +5,7 @@ using UnityEngineInternal;
 public abstract class AbstractEntityMovement : MonoBehaviour
 {
     public int[] GroundLayers;
-    private int GroundLayerMask = 0;
+    private int _groundLayerMask = 0;
 
     public float HorizontalSpeedCap;
 
@@ -14,12 +14,17 @@ public abstract class AbstractEntityMovement : MonoBehaviour
 
     protected bool IsGrounded;
 
+    public bool Grounded
+    {
+        get { return IsGrounded; }
+    }
+
     // Use this for initialization
     protected virtual void Start()
     {
         foreach (int layer in GroundLayers)
         {
-            GroundLayerMask += 1 << layer;
+            _groundLayerMask += 1 << layer;
         }
 
         if (ThisBody == null)
@@ -34,7 +39,7 @@ public abstract class AbstractEntityMovement : MonoBehaviour
 
     protected bool UpdateGrounded()
     {
-        IsGrounded = ThisCollider.IsTouchingLayers(GroundLayerMask);
+        IsGrounded = ThisCollider.IsTouchingLayers(_groundLayerMask);
         return IsGrounded;
     }
 
