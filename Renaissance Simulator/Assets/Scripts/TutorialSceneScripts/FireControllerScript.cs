@@ -9,6 +9,12 @@ public class FireControllerScript : MonoBehaviour
     public float PropagationSpeed;
     private float _currentFront;
 
+    public float Damage;
+    /// <summary>
+    /// Above this y level the player does not take damage
+    /// </summary>
+    public float YThreshold;
+
     // Use this for initialization
     void Start()
     {
@@ -25,23 +31,11 @@ public class FireControllerScript : MonoBehaviour
 
         // Damage the player if it is too close
         Vector2 playerPosition = Player.transform.position;
-        float playerDistance = playerPosition.x + playerPosition.y - _currentFront;
         // print(playerDistance);
 
-        if (playerDistance > 0)
+        if (playerPosition.x < _currentFront && playerPosition.y < YThreshold)
         {
-            return;
-        }
-        if (Player.GetComponent<AbstractEntityMovement>().Grounded)
-        {
-            if (playerDistance > -5)
-            {
-                Player.GetComponent<DamagableEntity>().ChangeHealth((int) playerDistance);
-            }
-            else
-            {
-                Player.GetComponent<DamagableEntity>().ChangeHealth(-5);
-            }
+            Player.GetComponent<DamagableEntity>().ChangeHealth(-Damage);
         }
     }
 }

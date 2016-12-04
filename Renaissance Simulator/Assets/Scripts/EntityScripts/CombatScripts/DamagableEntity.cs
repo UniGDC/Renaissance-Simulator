@@ -1,13 +1,16 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class DamagableEntity : MonoBehaviour
 {
-    private const int DefaultMaxHealth = 100;
-    public int MaxHealth;
-    public int DamageReduction;
-    private int _health;
+    private const float DefaultMaxHealth = 10;
+    public float MaxHealth;
+    public float DamageReduction;
+    private float _health;
+
+    public Slider HealthBar;
 
     public delegate void DeathAction(GameObject gameObject);
 
@@ -33,9 +36,25 @@ public class DamagableEntity : MonoBehaviour
         }
         _health = MaxHealth;
 
+        if (HealthBar == null)
+        {
+            HealthBar = gameObject.GetComponentInChildren<Slider>();
+        }
+
         if (OnDeath == null)
         {
             OnDeath = DefaultDeathAction;
+        }
+
+        UpdateHealthBar();
+    }
+
+    public void UpdateHealthBar()
+    {
+        if (HealthBar != null)
+        {
+            float healthProportion = _health / (float) MaxHealth;
+            HealthBar.value = HealthBar.maxValue * healthProportion + HealthBar.minValue * (1 - healthProportion);
         }
     }
 
@@ -43,15 +62,18 @@ public class DamagableEntity : MonoBehaviour
     /// Directly damages the character's health pool, ignores all delegate calculations.
     /// </summary>
     /// <param name="change">The amount of health points to take away</param>
-    public void ChangeHealth(int change)
+    public void ChangeHealth(float change)
     {
         _health += change;
-        print(_health);
+        // print(_health);
 
+        // Check for death
         if (_health < 0)
         {
             OnDeath(gameObject);
         }
+
+        UpdateHealthBar();
     }
 
     /// <summary>
@@ -60,9 +82,9 @@ public class DamagableEntity : MonoBehaviour
     /// All functions overriding ApplyDamage should use ChangeHealth to change the health of the character.
     /// </summary>
     /// <param name="damageStrength">The strength of the damage</param>
-    public virtual void ApplyDamage(int damageStrength)
+    public virtual void ApplyDamage(float damageStrength)
     {
-        int actualDamage = damageStrength - DamageReduction;
+        float actualDamage = damageStrength - DamageReduction;
         ChangeHealth(actualDamage < 0 ? 0 : actualDamage);
     }
 
@@ -71,7 +93,7 @@ public class DamagableEntity : MonoBehaviour
     {
     }
 
-    public int Health
+    public float Health
     {
         get { return _health; }
     }

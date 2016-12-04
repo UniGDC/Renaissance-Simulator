@@ -22,6 +22,9 @@ public class CameraFollow : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        // Null check
+        if (PlayerTransform == null) return;
+
         ThisTransform.position =
             new Vector3(Bounded ? Mathf.Clamp(PlayerTransform.position.x, LeftBound, RightBound) : PlayerTransform.position.x,
                 ThisTransform.position.y, ThisTransform.position.z);
